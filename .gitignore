@@ -1,0 +1,6 @@
+# IntelliJ project files
+.idea
+*.iml
+
+# Node.js
+node_modules
