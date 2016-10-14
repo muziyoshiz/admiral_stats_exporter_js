@@ -1,4 +1,7 @@
 (function () {
+  // bookmarklet のバージョン番号
+  var version = '提督情報エクスポータ v1.0.0';
+
   // エクスポートの実行時刻
   var date = new Date();
 
@@ -25,7 +28,7 @@
 
   // ログイン認証が必要な URL にいない場合は、アラートを出して終了
   if (!window.location.href.match(authorizedUrls)) {
-    alert('プレイヤーズサイトにログインし、海域情報が表示された状態で実行してください。');
+    alert(version + '：プレイヤーズサイトにログインし、海域情報が表示された状態で実行してください。');
     return;
   }
 
@@ -55,7 +58,7 @@
         /* error */
         // 同じエラーが何回も表示されるのを防ぐために、URL の末尾が dataType[0] に一致するときだけエラーメッセージを表示する
         if (dataType === dataTypes[0]) {
-          alert('接続に失敗しました。プレイヤーズサイトに再ログインしてから実行してください。(status code = ' + xhr.status + ')');
+          alert(version + '：接続に失敗しました。プレイヤーズサイトに再ログインしてから実行してください。(status code = ' + xhr.status + ')');
         }
       }
     };

@@ -6,22 +6,18 @@
 @sophiarcp さんに提供頂いたブックマークレットをもとに、機能追加していくための開発用リポジトリです。
 ビルド後のブックマークレットは [Admiral Stats](https://www.admiral-stats.com) のサイトで配布します。
 
-## ビルド環境の構築手順（Mac の場合）
+また、ブックマークレットの生成には、[JavaScriptを圧縮・整形するコマンド作り - ザリガニが見ていた...。](http://d.hatena.ne.jp/zariganitosh/20140814/making_of_closure_compiler_command "JavaScriptを圧縮・整形するコマンド作り - ザリガニが見ていた...。") にて公開されている
+js-compile.rb に -b (--bookmarklet) オプションを追加したものを用いています。
 
-git clone したディレクトリで以下を実行する。
+## ビルド環境の構築
 
-```
-brew update
-brew install yarn
-yarn install 
-```
+- Ruby のインストールされた環境を準備する
+
 
 ## ビルド方法
 
-シェルで以下を実行する。出力された文字列をブックマークとして登録する。
+シェルで以下を実行する。
 
 ```
-minified=`./node_modules/uglify-js/bin/uglifyjs --mangle --enclose --compress -- admiral_stats_exporter.js`
-encoded=`node -p "encodeURIComponent('$minified')"`
-echo -n "javascript:$encoded$"
+$ cat admiral_stats_exporter.js | ruby js-compile.rb -l2 -b
 ```
