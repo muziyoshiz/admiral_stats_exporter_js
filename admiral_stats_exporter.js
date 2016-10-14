@@ -24,7 +24,7 @@
   var dataTypes = ['Personal/basicInfo', 'TcBook/info', 'CharacterList/info'];
 
   // プレイデータの URL の末尾（現在取得できるすべてのプレイデータ）
-  // var dataTypes = ['Personal/basicInfo', 'Area/captureInfo', 'TcBook/info', 'EquipBook/info', 'Campaign/history', 'Campaign/info', 'Campaign/present', 'CharacterList/info', 'EquipList/info', 'Quest/info'];
+  // var allDataTypes = ['Personal/basicInfo', 'Area/captureInfo', 'TcBook/info', 'EquipBook/info', 'Campaign/history', 'Campaign/info', 'Campaign/present', 'CharacterList/info', 'EquipList/info', 'Quest/info'];
 
   // ログイン認証が必要な URL にいない場合は、アラートを出して終了
   if (!window.location.href.match(authorizedUrls)) {
