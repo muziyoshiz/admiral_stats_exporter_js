@@ -1,4 +1,7 @@
 # admiral_stats_exporter_js
+
+[![Join the chat at https://gitter.im/muziyoshiz/admiral_stats](https://badges.gitter.im/muziyoshiz/admiral_stats.svg)](https://gitter.im/muziyoshiz/admiral_stats?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 艦これアーケードのプレイデータをエクスポートするツール（JavaScript 版）の開発環境
 
 ## このリポジトリについて
