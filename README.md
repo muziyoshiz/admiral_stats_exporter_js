@@ -17,7 +17,7 @@ js-compile.rb に -b (--bookmarklet) オプションを追加したものを用�
 - Ruby のインストールされた環境を準備する
 
 
-## ビルド方法
+## 開発時のビルド方法
 
 ### Admiral Stats が対応するファイルのみを出力する bookmarklet
 
@@ -28,5 +28,22 @@ $ cat admiral_stats_exporter.js | ruby js-compile.rb -l2 -b
 ### 現時点でエクスポートできるすべてのファイルを出力する bookmarklet
 
 ```
-$ cat admiral_stats_exporter.js | sed -e 's/var dataTypes/\/\/ var dataTypes/g' | sed -e 's/\/\/ var allDataTypes/var dataTypes/g' | ruby js-compile.rb -l2 -b
+$ cat admiral_stats_exporter.js | sed -e 's/var dataTypes/\/\/ var dataTypes/g' | sed -e 's/\/\/ \/\/ var dataTypes/var dataTypes/g' | ruby js-compile.rb -l2 -b
+```
+
+## リリース版のビルド方法
+
+```
+$ ./build.sh
+```
+
+以下の2ファイルを生成します。
+
+- exporter.js: Admiral Stats が対応するファイルのみを出力する 
+- exporter_all.js: 現時点でエクスポートできるすべてのファイルを出力する
+
+ビルド結果は以下のスクリプトから読み込まれるため、"javascript:" を付与しません。
+
+```
+javascript:(function(u){var%20s=document.createElement('script');s.charset='UTF-8';s.src=u;document.body.appendChild(s)})('https://www.admiral-stats.com/bookmarklets/exporter.js');
 ```

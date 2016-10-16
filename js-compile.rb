@@ -33,5 +33,5 @@ params = {js_code:input,
           output_format:'text',
           output_info:'compiled_code'}
 res = Net::HTTP.post_form(url, params.merge(option_hash))
-puts((bookmarklet ? 'javascript:' : '') + res.body)
+puts((bookmarklet ? 'javascript:' : '') + res.body.gsub("\n",''))
 STDERR.puts "", "Before: #{input.length}", "After : #{res.body.length}", "Rate  : #{res.body.length.to_f / input.length.to_f * 100}"

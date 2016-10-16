@@ -1,3 +1,8 @@
 # IntelliJ project files
 .idea
 *.iml
+
+# Created files
+exporter.js
+exporter_all.js
+
