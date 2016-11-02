@@ -1,6 +1,6 @@
 (function () {
   // bookmarklet のバージョン番号
-  var version = 'Admiral Stats エクスポータ v1.1.0';
+  var version = 'Admiral Stats エクスポータ v1.2.0';
 
   // エクスポートの実行時刻
   var date = new Date();
@@ -21,10 +21,10 @@
   var apiUrl = 'https://kancolle-arcade.net/ac/api/';
 
   // プレイデータの URL の末尾（Admiral Stats がインポートできるプレイデータのみ）
-  var dataTypes = ['Personal/basicInfo', 'TcBook/info', 'CharacterList/info'];
+  var dataTypes = ['Personal/basicInfo', 'TcBook/info', 'CharacterList/info', 'Event/info'];
 
   // プレイデータの URL の末尾（現在取得できるすべてのプレイデータ）
-  // var dataTypes = ['Personal/basicInfo', 'Area/captureInfo', 'TcBook/info', 'EquipBook/info', 'Campaign/history', 'Campaign/info', 'Campaign/present', 'CharacterList/info', 'EquipList/info', 'Quest/info', 'Event/info'];
+  // var dataTypes = ['Personal/basicInfo', 'Area/captureInfo', 'TcBook/info', 'EquipBook/info', 'Campaign/history', 'Campaign/info', 'Campaign/present', 'CharacterList/info', 'EquipList/info', 'Quest/info'];
 
   // ログイン認証が必要な URL にいない場合は、アラートを出して終了
   if (!window.location.href.match(authorizedUrls)) {
