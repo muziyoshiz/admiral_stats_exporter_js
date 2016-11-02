@@ -1,6 +1,6 @@
 (function () {
   // bookmarklet のバージョン番号
-  var version = 'Admiral Stats エクスポータ v1.2.0';
+  var version = 'Admiral Stats エクスポータ v1.1.1';
 
   // エクスポートの実行時刻
   var date = new Date();
