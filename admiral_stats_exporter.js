@@ -1,6 +1,6 @@
 (function () {
   // bookmarklet のバージョン番号
-  var version = 'Admiral Stats エクスポータ v1.1.2';
+  var version = 'Admiral Stats エクスポータ v1.6.1';
 
   // エクスポートの実行時刻
   var date = new Date();
@@ -32,27 +32,50 @@
     return;
   }
 
+  // <script> タグの属性から、動作を切り替えるオプションを取得
+  var s = document.getElementById('admiral-stats-exporter');
+
+  // Admiral Stats の API トークン（空文字列の場合は nil に設定）
+  // API トークンが nil でない場合は、Admiral Stats にデータをアップロードする
+  var token = (s && s.getAttribute('data-token'));
+  if (token && token.length === 0) {
+    token = nil;
+  }
+  // ローカルディスクにファイルを保存するかどうか（'true' の場合は true に設定し、それ以外は false）
+  var skipBackup = (s && s.getAttribute('data-skip-backup') === 'true');
+
   dataTypes.forEach(function (dataType) {
+    var fileType = dataType.replace('/', '_');
+
     var xhr = new XMLHttpRequest();
-    var fname = dataType.replace('/', '_') + '_' + ymdhms + '.json';
+    var fname = fileType + '_' + ymdhms + '.json';
     xhr.open('GET', apiUrl + dataType);
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
     xhr.responseType = 'blob';
     xhr.onload = function () {
       if (xhr.status === 200) {
-        /* success */
-        var blob = new Blob([xhr.response]);
-        if (window.navigator.msSaveBlob) {
-          window.navigator.msSaveBlob(blob, fname);
-        } else {
-          var url = window.URL || window.webkitURL;
-          var blobUrl = url.createObjectURL(blob);
-          var a = document.createElement('a');
-          document.body.appendChild(a);
-          a.download = dataType.replace('/', '_') + '_' + ymdhms + '.json';
-          a.href = blobUrl;
-          a.click();
-          document.body.removeChild(a);
+        if (token) {
+          var post = new XMLHttpRequest();
+          post.open('POST', 'https://www.admiral-stats.com/api/v1/import/' + fileType + '/' + ymdhms);
+          post.setRequestHeader('Content-Type', 'application/json');
+          post.setRequestHeader('Authorization', 'Bearer ' + token);
+          post.send(xhr.response);
+        }
+
+        if (!skipBackup) {
+          var blob = new Blob([xhr.response]);
+          if (window.navigator.msSaveBlob) {
+            window.navigator.msSaveBlob(blob, fname);
+          } else {
+            var url = window.URL || window.webkitURL;
+            var blobUrl = url.createObjectURL(blob);
+            var a = document.createElement('a');
+            document.body.appendChild(a);
+            a.download = fileType + '_' + ymdhms + '.json';
+            a.href = blobUrl;
+            a.click();
+            document.body.removeChild(a);
+          }
         }
       } else {
         /* error */
