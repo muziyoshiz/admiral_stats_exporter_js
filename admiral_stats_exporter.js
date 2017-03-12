@@ -47,23 +47,39 @@
   dataTypes.forEach(function (dataType) {
     var fileType = dataType.replace('/', '_');
 
-    var xhr = new XMLHttpRequest();
+    var req = new XMLHttpRequest();
     var fname = fileType + '_' + ymdhms + '.json';
-    xhr.open('GET', apiUrl + dataType);
-    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    xhr.responseType = 'blob';
-    xhr.onload = function () {
-      if (xhr.status === 200) {
+    req.open('GET', apiUrl + dataType);
+    req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    req.responseType = 'blob';
+    req.onload = function () {
+      if (req.status === 200) {
+        // SEGA 公式からのダウンロード成功
         if (token) {
-          var post = new XMLHttpRequest();
-          post.open('POST', 'https://www.admiral-stats.com/api/v1/import/' + fileType + '/' + ymdhms);
-          post.setRequestHeader('Content-Type', 'application/json');
-          post.setRequestHeader('Authorization', 'Bearer ' + token);
-          post.send(xhr.response);
+          var apiReq = new XMLHttpRequest();
+          apiReq.open('POST', 'https://www.admiral-stats.com/api/v1/import/' + fileType + '/' + ymdhms);
+          apiReq.setRequestHeader('Content-Type', 'application/json');
+          apiReq.setRequestHeader('Authorization', 'Bearer ' + token);
+          // Admiral Stats に接続できなかった場合のメッセージ表示
+          // 同じエラーが何回も表示されるのを防ぐために、URL の末尾が dataType[0] に一致するときだけエラーメッセージを表示する
+          apiReq.onload = function () {
+            if (apiReq.status >= 300 && dataType === dataTypes[0]) {
+              var errMsg = version + '：Admiral Stats へのアップロードに失敗しました。(status code = ' + apiReq.status;
+              try {
+                var apiRes = JSON.parse(apiReq.response);
+                apiRes.errors.forEach(function (err) {
+                  errMsg += ', ';
+                  errMsg += err.message;
+                });
+              } catch(e) {}
+              alert(errMsg + ')');
+            }
+          };
+          apiReq.send(req.response);
         }
 
         if (!skipBackup) {
-          var blob = new Blob([xhr.response]);
+          var blob = new Blob([req.response]);
           if (window.navigator.msSaveBlob) {
             window.navigator.msSaveBlob(blob, fname);
           } else {
@@ -78,13 +94,13 @@
           }
         }
       } else {
-        /* error */
+        // SEGA 公式からのダウンロード失敗
         // 同じエラーが何回も表示されるのを防ぐために、URL の末尾が dataType[0] に一致するときだけエラーメッセージを表示する
         if (dataType === dataTypes[0]) {
-          alert(version + '：接続に失敗しました。プレイヤーズサイトに再ログインしてから実行してください。(status code = ' + xhr.status + ')');
+          alert(version + '：接続に失敗しました。プレイヤーズサイトに再ログインしてから実行してください。(status code = ' + req.status + ')');
         }
       }
     };
-    xhr.send();
+    req.send();
   });
 })();
