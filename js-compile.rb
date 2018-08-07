@@ -26,7 +26,7 @@ OptionParser.new do |opt|
 end
 #p option_hash
 
-url = URI('http://closure-compiler.appspot.com/compile')
+url = URI('https://closure-compiler.appspot.com/compile')
 input =  URI.decode(ARGV[0] || STDIN.gets(nil))
 params = {js_code:input, 
           compilation_level:'WHITESPACE_ONLY',
